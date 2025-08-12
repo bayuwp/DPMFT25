@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto bg-white p-6 shadow rounded">
-    <h2 class="text-2xl font-bold mb-4 text-blue-700">BPH</h2>
+    <h2 class="text-2xl font-bold mb-4 text-purple-700">BPH</h2>
 
     @if(session('success'))
         <div class="bg-green-100 text-green-700 p-2 rounded mb-3">
@@ -32,7 +32,7 @@
             <img src="{{ asset('storage/' . $editData->foto) }}" class="h-12 mt-2">
         @endif
 
-        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">
+        <button type="submit" class="bg-purple-500 hover:bg-purple-700 text-white px-4 py-2 rounded">
             {{ isset($editData) ? 'Update' : 'Tambah' }}
         </button>
         @if(isset($editData))
@@ -42,7 +42,7 @@
 
     {{-- Table Data --}}
 <table class="w-full mt-6 border border-blue-200">
-    <thead class="bg-blue-100">
+    <thead class="bg-purple-600 text-white px-4 py-2 rounded">
         <tr>
             <th class="p-2 border">Foto</th>
             <th class="p-2 border">Nama</th>

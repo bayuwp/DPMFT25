@@ -78,30 +78,35 @@ class PengawasanController extends Controller
     }
 
     public function show($slug)
-    {
-        $nama = ucwords(str_replace('-', ' ', $slug));
-        $model = $this->getModelInstance($slug);
+{
+    $nama = ucwords(str_replace('-', ' ', $slug));
+    $model = $this->getModelInstance($slug);
 
-        if (!class_exists($model)) {
-            return redirect()->route('pengawasan.select')->with('error', 'Model tidak ditemukan.');
-        }
-
-        // Ambil semua data proker dari model
-        $prokers = $model::orderBy('tanggal')->get(['id', 'nama_proker', 'ketupel', 'tanggal', 'kategori', 'status', ]);
-
-
-        return view('agenda.pengawasan.detail', [
-            'data' => [
-                'nama' => $nama,
-                'slug' => $slug,
-                'logo' => asset('img/logo-hmp.png'),
-                'deskripsi' => "Deskripsi kegiatan dari $nama",
-                'foto_proker' => asset('img/foto-proker.jpg'),
-                'prokers' => $prokers,
-                'status' => $ststus
-            ],
-        ]);
+    if (!class_exists($model)) {
+        return redirect()->route('pengawasan.select')->with('error', 'Model tidak ditemukan.');
     }
+
+    // Ambil semua data proker dari model (object Eloquent)
+    $prokers = $model::orderBy('tanggal')->get([
+        'id',
+        'nama_proker',
+        'ketupel',
+        'tanggal',
+        'kategori',
+        'status'
+    ]);
+
+    return view('agenda.pengawasan.detail', [
+        'data' => [
+            'nama'       => $nama,
+            'slug'       => $slug,
+            'logo'       => asset('img/logo-hmp.png'),
+            'deskripsi'  => "Deskripsi kegiatan dari $nama",
+            'foto_proker'=> asset('img/foto-proker.jpg'),
+            'prokers'    => $prokers
+        ],
+    ]);
+}
 
     public function showJurusan($slug)
     {
@@ -111,34 +116,29 @@ class PengawasanController extends Controller
         ]);
     }
 
-    public function validasiStatus($slug, $id)
-    {
-        $model = $this->getModelInstance($slug);
+    public function validasiStatus(Request $request, $slug, $id)
+{
+    $model = $this->getModelInstance($slug);
 
-        if (!class_exists($model)) {
-            return redirect()->back()->with('error', 'Model tidak ditemukan.');
-        }
-
-        $proker = $model::find($id);
-
-        if (!$proker) {
-            return redirect()->back()->with('error', 'Data proker tidak ditemukan.');
-        }
-
-        // Validasi status otomatis
-        if (!empty($proker->lpj)) {
-                $proker->status = 'Terlaksana';
-            } elseif (!empty($proker->proposal) || !empty($proker->instrumen_materi)) {
-                $proker->status = 'Terisi';
-            } else {
-                $proker->status = 'Belum Terisi';
-            }
-
-        $proker->save();
-
-        return redirect()->route('pengawasan.detail', ['slug' => $slug])
-            ->with('success', 'Status berhasil divalidasi!');
+    if (!class_exists($model)) {
+        return redirect()->back()->with('error', 'Model tidak ditemukan.');
     }
+
+    // Ambil data proker dari DB sebagai object Eloquent
+    $proker = $model::find($id);
+
+    if (!$proker) {
+        return redirect()->back()->with('error', 'Data proker tidak ditemukan.');
+    }
+
+    // Ambil status dari input user
+    $proker->status = $request->input('status');
+    $proker->save();
+
+    return redirect()->route('pengawasan.detail', ['slug' => $slug])
+        ->with('success', 'Status berhasil diperbarui!');
+}
+
 
     protected function getModelInstance($slug)
     {

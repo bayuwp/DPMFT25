@@ -1,7 +1,7 @@
 @php
     $menuItems = [
         ['label' => 'Home', 'url' => '/'],
-        ['label' => 'Visi Misi', 'url' => '/visi-misi'],
+        ['label' => 'Ruang Cakra', 'url' => '/Ruang_Cakra'],
         ['label' => 'Struktur', 'url' => '/struktur'],
         ['label' => 'Arsip', 'url' => '/arsip'],
         ['label' => 'Agenda', 'url' => '/agenda'],

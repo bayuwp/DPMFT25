@@ -1,25 +1,47 @@
 @extends('layouts.admin')
 
 @section('content')
-<section class="py-16 bg-gray-50">
+<section class="py-16 bg-gradient-to-b from-purple-50 to-purple-100 min-h-screen">
     <div class="max-w-6xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center text-purple-800 mb-10">Halaman Agenda</h2>
-        <p class="text-center text-gray-600 mb-12">Pilih agenda yang ingin Anda kelola</p>
+        <!-- Judul Halaman -->
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-extrabold text-purple-900 mb-4">Halaman Agenda</h2>
+            <p class="text-lg text-gray-700">Pilih agenda yang ingin Anda kelola</p>
+        </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <!-- Agenda Pengawasan -->
+        <!-- Grid Menu -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+
+            <!-- Card Pengawasan -->
             <a href="{{ url('/admin/pengawasan') }}"
-               class="block p-6 border border-gray-300 rounded-lg shadow hover:shadow-md hover:bg-purple-50 transition duration-300">
-                <h3 class="text-xl font-semibold text-purple-700 mb-2 text-center">Pengawasan</h3>
-                <p class="text-sm text-gray-600 text-center">Dokumentasi dan pengawasan terhadap HMP dan lembaga kemahasiswaan di FT.</p>
+               class="group block p-8 bg-white border border-gray-200 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 hover:-translate-y-1">
+                <div class="flex flex-col items-center text-center">
+                    <div class="bg-purple-100 p-4 rounded-full mb-4 group-hover:bg-purple-200 transition">
+                        <img src="{{ asset('img/LOGO_PARLEMEN_CAKRA_ADHIKARA_DPM_FT-removebg-preview.png') }}"
+                             alt="Logo DPM FT" class="w-16 h-16 object-contain">
+                    </div>
+                    <h3 class="text-2xl font-semibold text-purple-800 mb-2">Pengawasan</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Dokumentasi dan pengawasan terhadap HMP dan lembaga kemahasiswaan di FT.
+                    </p>
+                </div>
             </a>
 
-            <!-- Agenda Pengawasan PKKMB -->
+            <!-- Card Pengawasan PKKMB -->
             <a href="{{ url('/admin/pengawasan-pkkmb') }}"
-               class="block p-6 border border-gray-300 rounded-lg shadow hover:shadow-md hover:bg-purple-50 transition duration-300">
-                <h3 class="text-xl font-semibold text-purple-700 mb-2 text-center">Pengawasan PKKMB</h3>
-                <p class="text-sm text-gray-600 text-center">Tindak lanjut hasil pengawasan kegiatan PKKMB Fakultas Teknik.</p>
+               class="group block p-8 bg-white border border-gray-200 rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 hover:-translate-y-1">
+                <div class="flex flex-col items-center text-center">
+                    <div class="bg-purple-100 p-4 rounded-full mb-4 group-hover:bg-purple-200 transition">
+                        <img src="{{ asset('img/LOGO_PARLEMEN_CAKRA_ADHIKARA_DPM_FT-removebg-preview.png') }}"
+                             alt="Logo DPM FT" class="w-16 h-16 object-contain">
+                    </div>
+                    <h3 class="text-2xl font-semibold text-purple-800 mb-2">Pengawasan PKKMB</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Tindak lanjut hasil pengawasan kegiatan PKKMB Fakultas Teknik.
+                    </p>
+                </div>
             </a>
+
         </div>
     </div>
 </section>

@@ -38,7 +38,7 @@ class AgendaTeknikVisionController extends Controller
             ];
         });
 
-        return view('agenda.teknik-vision.index', compact('jurusans'));
+        return view('ruang_cakra.index', compact('jurusans'));
     }
 
     public function show($slug)
@@ -66,7 +66,7 @@ class AgendaTeknikVisionController extends Controller
             ? $cabinet->deskripsi_jurusan
             : "Deskripsi singkat untuk jurusan " . ucwords(str_replace('-', ' ', $slug));
 
-        return view('agenda.teknik-vision.show', compact(
+        return view('ruang_cakra.show', compact(
             'slug',
             'prokers',
             'fotoFungsionaris',
@@ -94,7 +94,7 @@ class AgendaTeknikVisionController extends Controller
             ? $cabinet->deskripsi_jurusan
             : "Deskripsi singkat untuk jurusan " . ucwords(str_replace('-', ' ', $slug));
 
-        return view('agenda.teknik-vision.detail', compact('slug', 'proker', 'logo', 'deskripsi'));
+        return view('ruang_cakra.detail', compact('slug', 'proker', 'logo', 'deskripsi'));
     }
 
     /**

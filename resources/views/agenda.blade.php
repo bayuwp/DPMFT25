@@ -24,10 +24,9 @@
             @php
                 $agendas = [
                     ['title' => 'Pengawasan', 'desc' => 'Dokumentasi dan tindak lanjut kegiatan pengawasan oleh DPM FT.', 'link' => url('/agenda/pengawasan')],
-                    ['title' => 'Pengawasan PKKMB', 'desc' => 'Laporan dan evaluasi pelaksanaan PKKMB di lingkungan Fakultas Teknik.', 'link' => url('/agenda/pengawasan-pkkmb')],
-                    ['title' => 'Teknik Vision', 'desc' => 'Program Keja yang ada di Faklutas Teknik', 'link' => url('/agenda/teknik-vision')],
-                    ['title' => 'Aspirasi Mahasiswa FT', 'desc' => 'Salurkan aspirasi Anda demi perbaikan lingkungan akademik FT Unesa.', 'link' => 'https://forms.gle/ScMMUHr2vyYQ7VRK8', 'target' => '_blank'],
-                    ['title' => 'Pengaduan PKKMB FT', 'desc' => 'Laporkan penyimpangan atau kendala selama kegiatan PKKMB berlangsung.', 'link' => 'https://bit.ly/FormAduanPKKMBFT2024', 'target' => '_blank'],
+                    ['title' => 'Pengawasan PKKMB FT', 'desc' => 'Laporan dan evaluasi pelaksanaan PKKMB di lingkungan Fakultas Teknik.', 'link' => url('/agenda/pengawasan-pkkmb')],
+                    ['title' => 'Aspirasi Mahasiswa FT', 'desc' => 'Salurkan aspirasi Anda demi perbaikan lingkungan akademik FT Unesa.', 'link' => 'https://bit.ly/AspirasiMahasiswaFT2025', 'target' => '_blank'],
+                    ['title' => 'Pengaduan PKKMB FT', 'desc' => 'Laporkan penyimpangan atau kendala selama kegiatan PKKMB berlangsung.', 'link' => 'https://bit.ly/LaporanPengaduanPKKMBFT2025', 'target' => '_blank'],
                 ];
             @endphp
 

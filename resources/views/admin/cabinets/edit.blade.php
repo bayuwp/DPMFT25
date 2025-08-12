@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="max-w-3xl mx-auto py-10 px-4">
-    <h2 class="text-2xl font-bold text-blue-800 mb-6">Edit Cabinet</h2>
+    <h2 class="text-2xl font-bold text-purple-800 mb-6">Edit Cabinet</h2>
 
     <form action="{{ route('admin.cabinets.update', $cabinet->id) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
         @csrf

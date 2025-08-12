@@ -36,7 +36,7 @@ class AdminTeknikVisionController extends Controller
             ];
         });
 
-        return view('admin.teknik-vision.index', compact('jurusans'));
+        return view('admin.ruang_cakra.index', compact('jurusans'));
     }
 
     /**
@@ -47,32 +47,32 @@ class AdminTeknikVisionController extends Controller
         $model = $this->getModel($slug);
         $prokers = $model::all();
 
-        return view('admin.teknik-vision.show', compact('slug', 'prokers'));
+        return view('admin.ruang_cakra.show', compact('slug', 'prokers'));
     }
 
     public function editDeskripsi($slug, $id)
-{
-    $model = $this->getModel($slug);         // ambil model sesuai slug
-    $proker = $model::findOrFail($id);       // cari data proker
+    {
+        $model = $this->getModel($slug);         // ambil model sesuai slug
+        $proker = $model::findOrFail($id);       // cari data proker
 
-    return view('admin.teknik-vision.edit-deskripsi', compact('proker', 'slug'));
-}
+        return view('admin.ruang_cakra.edit-deskripsi', compact('proker', 'slug'));
+    }
 
-public function updateDeskripsi(Request $request, $slug, $id)
-{
-    $request->validate([
-        'deskripsi_proker' => 'nullable|string',
-    ]);
+    public function updateDeskripsi(Request $request, $slug, $id)
+    {
+        $request->validate([
+            'deskripsi_proker' => 'nullable|string',
+        ]);
 
-    $model = $this->getModel($slug);          // ambil model sesuai slug
-    $proker = $model::findOrFail($id);
+        $model = $this->getModel($slug);          // ambil model sesuai slug
+        $proker = $model::findOrFail($id);
 
     $proker->deskripsi_proker = $request->input('deskripsi_proker');
     $proker->save();
 
-    return redirect()->route('teknik-vision.edit-deskripsi', [$slug, $id])
-                     ->with('success', 'Deskripsi berhasil diperbarui.');
-}
+    return redirect()->route('admin.ruang_cakra.edit-deskripsi', [$slug, $id])
+                        ->with('success', 'Deskripsi berhasil diperbarui.');
+    }
 
 
     /**
@@ -92,7 +92,7 @@ public function updateDeskripsi(Request $request, $slug, $id)
         $model = $this->getModel($slug);
         $proker = $model::findOrFail($id);
 
-        return view('admin.teknik-vision.proker-detail', compact('slug', 'proker'));
+        return view('admin.ruang_cakra.proker-detail', compact('slug', 'proker'));
     }
 
     public function uploadImage(Request $request)

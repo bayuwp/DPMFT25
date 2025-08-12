@@ -70,7 +70,65 @@
 </section>
 <!-- pengertian dpm end -->
 
-<!-- berita acara -->
+<!-- Section Visi Misi -->
+<section class="py-16 bg-gradient-to-r from-blue-200 to-blue-100 min-h-screen">
+  <div class="max-w-7xl mx-auto px-4">
+    <!-- Heading -->
+    <div class="flex justify-center">
+        <h2 class="relative text-4xl font-bold text-center mt-10 mb-10 text-blue-900 drop-shadow-md
+            border-4 border-blue-500 rounded-xl px-8 py-3 shadow-xl transition-transform duration-500
+            hover:scale-105 hover:shadow-2xl">
+            Visi & Misi
+            <span class="absolute inset-0 border-4 border-blue-300 rounded-xl blur-md -z-10"></span>
+        </h2>
+    </div>
+
+    <!-- Container -->
+    <div class="flex flex-col md:flex-row items-center gap-10 bg-white p-8 rounded-xl shadow-xl">
+
+        <!-- Logo + Nama Parlemen -->
+        <div class="md:w-1/3 flex flex-col items-center" data-aos="zoom-in" data-aos-duration="700">
+            <h3 class="text-3xl font-extrabold bg-gradient-to-r from-yellow-500 to-orange-600 bg-clip-text
+                text-transparent tracking-wider drop-shadow-lg mb-4 uppercase text-center">
+                Cakra Adhikara
+            </h3>
+
+            <img src="{{ asset('img/LOGO_PARLEMEN_CAKRA_ADHIKARA_DPM_FT-removebg-preview.png') }}"
+                alt="Logo DPM FT"
+                class="w-64 object-contain drop-shadow-lg mx-auto"
+            >
+        </div>
+
+        <!-- Visi & Misi -->
+        <div class="md:w-2/3 space-y-10">
+
+            <!-- Visi -->
+            <div data-aos="fade-up" data-aos-duration="600">
+                <h3 class="text-2xl font-bold mb-3 text-blue-800">Visi</h3>
+                <p class="text-gray-700 text-lg leading-relaxed">
+                    Menjadikan DPM FT UNESA sebagai lembaga legislatif
+                    yang transparan, responsif, dan inovatif dalam memperjuangkan hak serta kesejahteraan
+                    mahasiswa melalui kebijakan yang inklusif, demokratis, dan berintegritas.
+                </p>
+            </div>
+
+            <!-- Misi -->
+            <div data-aos="fade-up" data-aos-delay="100" data-aos-duration="600">
+                <h3 class="text-2xl font-bold mb-3 text-blue-800">Misi</h3>
+                <ol class="list-decimal ml-6 text-gray-700 text-lg space-y-3 leading-relaxed">
+                    <li data-aos="fade-right" data-aos-delay="200">Meningkatkan keterlibatan mahasiswa Fakultas Teknik dalam pengambilan keputusan dan pengawalan kebijakan.</li>
+                    <li data-aos="fade-right" data-aos-delay="300">Memfasilitasi komunikasi yang efektif antara mahasiswa dan pihak kampus demi kesejahteraan mahasiswa FT UNESA.</li>
+                    <li data-aos="fade-right" data-aos-delay="400">Mengembangkan layanan advokasi yang responsif terhadap kebutuhan Mahasiswa Fakultas Teknik.</li>
+                    <li data-aos="fade-right" data-aos-delay="500">Membangun dan memperkuat komunikasi yang efektif antar organisasi mahasiswa, baik di lingkungan internal maupun eksternal, guna menciptakan sinergi dan kolaborasi yang positif.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+  </div>
+</section>
+<!-- end Section Visi Misi -->
+
+<!-- Berita Acara -->
 <section class="bg-gradient-to-br from-blue-200 to-blue-100 py-12" id="berita">
     <div class="max-w-6xl mx-auto px-4" data-aos="fade-up" data-aos-duration="800">
         <div class="flex justify-center">
@@ -81,23 +139,43 @@
                 <span class="absolute inset-0 border-4 border-blue-300 rounded-xl blur-md -z-10"></span>
             </h2>
         </div>
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             @foreach($beritas as $berita)
-            <div class="bg-white shadow-lg rounded-xl overflow-hidden transform transition-all duration-700 opacity-0 translate-y-10 hover:-translate-y-1 hover:shadow-2xl" data-observe>
-                <div class="overflow-hidden">
-                    <img src="{{ asset('storage/' . $berita->gambar) }}" alt="{{ $berita->judul }}"
-                        class="w-full h-64 object-cover hover:scale-105 transition-transform duration-500">
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold mb-2 text-gray-800 hover:text-blue-600 transition-colors duration-300">
+                @php
+                    $gambarList = json_decode($berita->gambar, true);
+                @endphp
+
+                <div class="bg-white shadow-lg rounded-xl overflow-hidden p-4" data-observe>
+                    @if(!empty($gambarList))
+                        <div id="slider-{{ $berita->id }}" class="splide" aria-label="Slider Berita {{ $berita->judul }}">
+                            <div class="splide__track">
+                                <ul class="splide__list">
+                                    @foreach($gambarList as $gambar)
+                                        <li class="splide__slide">
+                                            <img src="{{ asset('storage/' . $gambar) }}" alt="Gambar Berita"
+                                                class="w-full aspect-[4/5] object-cover rounded-lg" />
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+
+
+                    @else
+                        <div class="bg-gray-200 flex items-center justify-center h-[240px] rounded-lg text-gray-500">
+                            Tidak ada gambar
+                        </div>
+                    @endif
+
+                    <h3 class="text-xl font-bold mt-4 text-gray-800">
                         {{ $berita->judul }}
                     </h3>
-                    <p class="text-gray-600 mb-4 line-clamp-3">{{ $berita->deskripsi }}</p>
-                    <a href="#" class="inline-block text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors duration-300">
-                        Baca Selengkapnya →
-                    </a>
+
+                    <p class="text-gray-600">
+                        {{ \Illuminate\Support\Str::limit($berita->deskripsi, 100) }}
+                    </p>
                 </div>
-            </div>
             @endforeach
         </div>
     </div>
@@ -119,5 +197,26 @@
         });
     });
 </script>
+
+<!-- DearFlip Init -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        @foreach($beritas as $berita)
+            var el = document.getElementById('slider-{{ $berita->id }}');
+            if(el){
+                new Splide(el, {
+                    type: 'loop',
+                    perPage: 1,
+                    autoplay: true,
+                    pauseOnHover: true,
+                    pagination: true,
+                    arrows: true,
+                }).mount();
+            }
+        @endforeach
+    });
+</script>
+
+
 
 @endsection

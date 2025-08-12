@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="bg-white p-6 shadow rounded">
-    <h2 class="text-2xl font-bold mb-4 text-blue-700">Komisi 1</h2>
+    <h2 class="text-2xl font-bold mb-4 text-purple-700">Komisi 1</h2>
 
     {{-- ✅ Notifikasi sukses --}}
     @if(session('success'))
@@ -47,7 +47,7 @@
 
         <div class="flex gap-2">
             <button type="submit"
-                    class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow">
+                    class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded shadow">
                 {{ isset($editData) ? 'Update' : 'Tambah' }}
             </button>
             @if(isset($editData))
@@ -62,7 +62,7 @@
     {{-- ✅ Tabel Data --}}
     <div class="overflow-x-auto">
         <table class="min-w-full border border-gray-300 text-sm">
-            <thead class="bg-blue-200 text-gray-700">
+            <thead class="bg-purple-600 text-white px-4 py-2 text-gray-700">
                 <tr>
                     <th class="border px-4 py-2">Nama</th>
                     <th class="border px-4 py-2">Jabatan</th>
@@ -84,13 +84,13 @@
                         </td>
                         <td class="border px-4 py-2 text-center space-x-2">
                             <a href="{{ route('admin.komisi1.edit', $item->id) }}"
-                               class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded shadow">✏️ Edit</a>
+                               class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded shadow">Edit</a>
                             <form action="{{ route('admin.komisi1.destroy', $item->id) }}" method="POST"
                                   onsubmit="return confirm('Yakin ingin menghapus data ini?')"
                                   class="inline">
                                 @csrf @method('DELETE')
                                 <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow">
-                                    🗑️ Hapus
+                                    Hapus
                                 </button>
                             </form>
                         </td>

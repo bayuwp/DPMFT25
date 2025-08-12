@@ -4,7 +4,7 @@
 <div class="max-w-3xl mx-auto px-4 py-6">
     <h2 class="text-2xl font-bold text-gray-800 mb-6">Tambah Berita</h2>
 
-    {{-- Tampilkan error validasi jika ada --}}
+    {{-- Error validasi --}}
     @if ($errors->any())
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
             <ul class="list-disc list-inside">
@@ -35,12 +35,13 @@
                       required>{{ old('deskripsi') }}</textarea>
         </div>
 
-        {{-- Gambar --}}
+        {{-- Upload gambar --}}
         <div class="mb-6">
             <label for="gambar" class="block text-gray-700 font-medium mb-2">Gambar</label>
-            <input type="file" id="gambar" name="gambar"
-                   class="w-full px-3 py-2 border rounded-lg @error('gambar') border-red-500 @enderror"
-                   accept="image/*" required>
+            <input type="file" id="gambar" name="gambar[]" multiple
+                class="w-full px-3 py-2 border rounded-lg @error('gambar.*') border-red-500 @enderror"
+                accept="image/*" required>
+            <small class="text-gray-500">Bisa pilih lebih dari satu gambar.</small>
         </div>
 
         {{-- Tombol --}}

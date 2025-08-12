@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Pengawasan;
 use App\Models\Proker;
+use App\Models\Cabinet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -29,6 +30,8 @@ class PengawasanAdminController extends Controller
             ['name' => 'Perencanaan Wilayah dan Kota', 'slug' => 'pwk'],
             ['name' => 'Badan Eksekutif Mahasiswa', 'slug' => 'bem'],
         ];
+
+        $programs = Cabinet::select('slug', 'nama_cabinet', 'logo_cabinet')->get();
         return view('admin.pengawasan.index', compact('programs'));
     }
 
@@ -278,6 +281,47 @@ class PengawasanAdminController extends Controller
             ->route('admin.pengawasan.show', $slug)
             ->with('success', 'Berita berhasil diunggah.');
     }
+
+    public function updateStatus(Request $request, $slug, $id)
+    {
+        $request->validate([
+            'status' => 'required|in:belum terisi,terisi,terlaksana'
+        ]);
+
+        // Mapping slug ke model
+        $map = [
+            'teknik-mesin' => \App\Models\ProkerTeknikMesin::class,
+            'pendidikan-teknik-mesin' => \App\Models\ProkerPendidikanTeknikMesin::class,
+            'pendidikan-tata-boga' => \App\Models\ProkerTataBoga::class,
+            'pendidikan-tata-busana' => \App\Models\ProkerTataBusana::class,
+            'pendidikan-tata-rias' => \App\Models\ProkerTataRias::class,
+            'teknik-informatika' => \App\Models\ProkerTI::class,
+            'pendidikan-teknik-informatika' => \App\Models\ProkerPTI::class,
+            'sistem-informasi' => \App\Models\ProkerSI::class,
+            'teknik-elektro' => \App\Models\ProkerTE::class,
+            'pendidikan-teknik-elektro' => \App\Models\ProkerPTE::class,
+            'teknik-sipil' => \App\Models\ProkerSipil::class,
+            'pendidikan-teknik-bangunan' => \App\Models\ProkerPTB::class,
+            'pwk' => \App\Models\ProkerPWK::class,
+            'bem' => \App\Models\ProkerBEM::class,
+        ];
+
+        // Validasi slug
+        if (!isset($map[$slug])) {
+            abort(404, 'Jurusan tidak ditemukan');
+        }
+
+        $model = $map[$slug];
+        $proker = $model::findOrFail($id);
+
+        // Update status
+        $proker->status = $request->status;
+        $proker->save();
+
+        return back()->with('success', 'Status proker berhasil diperbarui.');
+    }
+
+
 
 
 

@@ -59,10 +59,6 @@ Route::get('/agenda', function () {
 });
 
 
-// // Agenda
-// Route::get('/agenda/pengawasan', [AgendaController::class, 'pengawasan'])->name('agenda.pengawasan');
-
-
 // Group dengan middleware auth untuk dashboard
 Route::prefix('dashboard')->name('dashboard.')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('index');
@@ -75,17 +71,6 @@ Route::prefix('dashboard')->name('dashboard.')->group(function () {
 Route::resource('home', HomeController::class)->only(['index']);
 Route::resource('contact', ContactController::class)->only(['index']);
 
-
-// // Admin
-// Route::prefix('admin')->name('admin.')->group(function () {
-//     Route::resource('berita', BeritaController::class)->parameters([
-//         'berita' => 'berita'
-//     ]);
-// });
-
-// Halaman Pengawasan per Prodi
-// Route::get('/agenda/pengawasan', [PengawasanController::class, 'index'])->name('pengawasan.index');
-// Route::get('/agenda/pengawasan/{slug}', [PengawasanController::class, 'show'])->name('pengawasan.show');
 
 // User minta izin edit
 Route::post('/pengawasan/{slug}/proker/{id}/request-edit', [PublicPengawasanController::class, 'requestEdit'])->name('proker.requestEdit');
@@ -193,6 +178,7 @@ Route::prefix('admin')->middleware(['auth', 'is_admin'])->name('admin.')->group(
             Route::post('/{slug}/{id}/reject', [PengawasanAdminController::class, 'rejectEdit'])->name('reject');
 
             Route::post('/{slug}/{id}/upload-berita', [PengawasanAdminController::class, 'uploadBerita'])->name('uploadBerita');
+            Route::put('/{slug}/{id}/status', [PengawasanAdminController::class, 'updateStatus'])->name('updateStatus');
 
             // Detail show jurusan, letakkan paling bawah agar tidak bentrok dengan 'create' atau 'edit'
             Route::get('/{slug}', [PengawasanAdminController::class, 'show'])->name('show');
@@ -210,12 +196,6 @@ Route::prefix('admin')->middleware(['auth', 'is_admin'])->name('admin.')->group(
 
     // PKKMB
     Route::resource('pengawasan-pkkmb', PengawasanPKKMBController::class);
-
-    // Route::put('ppl-ft/{slug}/proker/{id}/status', [\App\Http\Controllers\Admin\PPLFTAdminController::class, 'updateStatus'])->name('ppl-ft.proker.updateStatus');
-
-    // Route::get('/', [PPLFTAdminController::class, 'index'])->name('index');
-    // Route::get('/{slug}', [PPLFTAdminController::class, 'show'])->name('show');
-    // Route::post('/{slug}/chat', [\App\Http\Controllers\Admin\PPLFTAdminController::class, 'sendChat'])->name('chat.send');
 });
 
 Route::prefix('ppl-ft')->name('ppl-ft.')->group(function () {
@@ -241,10 +221,19 @@ Route::prefix('ppl-ft')->name('ppl-ft.')->group(function () {
 
         // Store Proker
         Route::post('/{slug}/proker/store', [PPLFTUserController::class, 'store'])->name('proker.store');
-        Route::put('/{slug}/proker/{id}/proposal', [App\Http\Controllers\PPLFTUserController::class, 'updateProposal'])->name('proker.updateProposal');
-        Route::put('{slug}/proker/{id}/lpj', [PPLFTUserController::class, 'updateLpj'])->name('proker.updateLpj');
-    });
 
+        // Update Proposal
+        Route::put('/{slug}/proker/{id}/proposal', [PPLFTUserController::class, 'updateProposal'])
+            ->name('proker.updateProposal');
+
+        // Update LPJ
+        Route::put('{slug}/proker/{id}/lpj', [PPLFTUserController::class, 'updateLpj'])
+            ->name('proker.updateLpj');
+
+        // ✅ Update Link Dokumentasi atau Time Stap
+        Route::post('/{slug}/proker/{id}/{field}/update-link', [PPLFTUserController::class, 'updateLinkDokumen'])
+            ->name('proker.updateLinkDokumen');
+    });
 });
 
 Route::get('/agenda/pengawasan', [PengawasanController::class, 'selectJurusan'])->name('pengawasan.select');
@@ -300,9 +289,9 @@ Route::get('/tentang-kami/komisi-4', [PublicKomisi4Controller::class, 'index'])-
 
 
 // Teknik Vision
-Route::prefix('admin/teknik-vision')
+Route::prefix('admin/ruang_cakra')
     ->middleware(['auth', 'is_admin'])
-    ->name('teknik-vision.')
+    ->name('admin.ruang_cakra.')
     ->group(function () {
         Route::get('/', [AdminTeknikVisionController::class, 'index'])->name('index');
         Route::get('/{slug}', [AdminTeknikVisionController::class, 'show'])->name('show');
@@ -314,48 +303,12 @@ Route::prefix('admin/teknik-vision')
         Route::post('/upload-image', [AdminTeknikVisionController::class, 'uploadImage'])->name('upload-image');
 });
 
-// User Teknik Vision
-Route::prefix('agenda/teknik-vision')->name('agenda.teknik-vision.')->group(function () {
+// User Ruang Cakra
+Route::prefix('Ruang_Cakra')->name('ruang_cakra.')->group(function () {
     Route::get('/', [AgendaTeknikVisionController::class, 'index'])->name('index');
     Route::get('/{slug}', [AgendaTeknikVisionController::class, 'show'])->name('show');
     Route::get('/{slug}/{id}/detail', [AgendaTeknikVisionController::class, 'detail'])->name('detail');
 });
 
-
-// // Agenda Pengawasan
-// Route::get('/admin/agenda', function () {
-//     return view('admin.agenda.index');
-// })->name('admin.agenda.index');
-
-// Route::prefix('admin/pengawasan')->name('admin.pengawasan.')->group(function () {
-//     Route::get('/', [PengawasanAdminController::class, 'index'])->name('index');
-//     Route::get('/create', [PengawasanAdminController::class, 'create'])->name('create');
-//     Route::post('/', [PengawasanAdminController::class, 'store'])->name('store');
-//     Route::get('/{pengawasan}/edit', [PengawasanAdminController::class, 'edit'])->name('edit');
-//     Route::put('/{pengawasan}', [PengawasanAdminController::class, 'update'])->name('update');
-//     Route::delete('/{pengawasan}', [PengawasanAdminController::class, 'destroy'])->name('destroy');
-//     Route::get('/{slug}', [PengawasanAdminController::class, 'show'])->name('show');
-// });
-
-// // ROUTE UNTUK PROKER (CRUD Proker)
-// Route::prefix('admin/proker')->name('admin.proker.')->group(function () {
-//     Route::get('/create/{pengawasan}', [AdminProkerController::class, 'create'])->name('create'); // tampilkan form tambah proker
-//     Route::post('/', [AdminProkerController::class, 'store'])->name('store'); // simpan proker baru
-//     Route::get('/{id}/edit', [AdminProkerController::class, 'edit'])->name('edit'); // form edit
-//     Route::put('/{id}', [AdminProkerController::class, 'update'])->name('update'); // update proker
-//     Route::delete('/{id}', [AdminProkerController::class, 'destroy'])->name('destroy'); // hapus
-// });
-
-// Route::get('/pengawasan/{slug}', [AdminProkerController::class, 'show'])->name('admin.pengawasan.show');
-// Route::get('/create/{pengawasan}', [AdminProkerController::class, 'create'])->name('create');
-// Route::get('/admin/pengawasan', [AdminProkerController::class, 'index'])->name('admin.pengawasan.index');
-
-// Route::get('/agenda/pengawasan/{slug}', [PublicPengawasanController::class, 'show'])->name('pengawasan.show');
-// Route::get('admin/proker/{id}/edit', [AdminProkerController::class, 'edit'])->name('admin.proker.edit');
-// Route::put('/admin/proker/{id}', [PengawasanAdminController::class, 'update'])->name('admin.proker.update');
-
-// Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
-//     Route::resource('pengawasan-pkkmb', PengawasanPKKMBController::class);
-// });
 
 Route::get('/agenda/pengawasan-pkkmb', [PengawasanPKKMBPublicController::class, 'index'])->name('agenda.pengawasan-pkkmb');

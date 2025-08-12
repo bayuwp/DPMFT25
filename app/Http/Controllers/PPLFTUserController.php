@@ -297,6 +297,29 @@ class PPLFTUserController extends Controller
             ->with('success', 'Status berhasil divalidasi!');
     }
 
+    public function updateLinkDokumen(Request $request, $slug, $id, $field)
+{
+    // Field yang boleh diisi dengan link
+    $allowedLinkFields = ['dokumentasi', 'time_stap'];
+
+    if (!in_array($field, $allowedLinkFields)) {
+        abort(400, 'Kolom tidak valid untuk input link.');
+    }
+
+    $request->validate([
+        'link' => 'required|url|max:255',
+    ]);
+
+    $model = $this->getModelInstance($slug);
+    $proker = $model::findOrFail($id);
+
+    $proker->$field = $request->link;
+    $proker->save();
+
+    return back()->with('success', ucfirst($field) . ' berhasil diperbarui dengan link.');
+}
+
+
 
 
 }

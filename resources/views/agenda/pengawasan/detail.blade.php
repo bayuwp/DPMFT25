@@ -8,7 +8,9 @@
             @if (!empty($data['logo']))
                 <img src="{{ $data['logo'] }}" alt="Logo HMP" class="mx-auto w-32 mb-4">
             @endif
-            <h2 class="text-3xl font-bold text-blue-800">{{ $proker['nama_proker'] ?? $proker['nama'] ?? '-' }}</h2>
+            <h2 class="text-3xl font-bold text-blue-800">
+                Program Kerja {{ $data['nama_proker'] }}
+            </h2>
             <p class="text-gray-700 mt-4">{{ $data['deskripsi'] }}</p>
         </div>
 
@@ -59,15 +61,16 @@
                         {{-- Status dengan Badge --}}
                         <td class="px-6 py-3">
                             @php
-                                $badgeClasses = match($proker['status']) {
+                                $status = $proker['status'] ?? 'Tidak Diketahui';
+                                $badgeClasses = match($status) {
                                     'Belum Terisi' => 'bg-yellow-100 text-yellow-700',
-                                    'Terisi' => 'bg-blue-100 text-blue-700',
-                                    'Terlaksana' => 'bg-green-100 text-green-700',
-                                    default => 'bg-gray-100 text-gray-700',
+                                    'Terisi'       => 'bg-blue-100 text-blue-700',
+                                    'Terlaksana'   => 'bg-green-100 text-green-700',
+                                    default        => 'bg-gray-100 text-gray-700',
                                 };
                             @endphp
                             <span class="px-3 py-1 text-xs font-medium rounded-full {{ $badgeClasses }}">
-                                {{ $proker['status'] }}
+                                {{ $status }}
                             </span>
                         </td>
 
@@ -87,13 +90,14 @@
                         {{-- Edit --}}
                         <td class="px-6 py-3">
                             @php
-                                $canEdit = isset($proker['created_at']) && \Carbon\Carbon::now()->diffInDays(\Carbon\Carbon::parse($proker['created_at'])) <= 14;
+                                $deadline = \Carbon\Carbon::create(2025, 8, 30, 23, 59, 59);
+                                $canEdit = isset($proker['created_at']) && \Carbon\Carbon::now()->lte($deadline);
                             @endphp
 
                             @if ($canEdit)
                                 <a href="{{ route('proker.edit', ['slug' => $data['slug'], 'id' => $proker['id']]) }}"
                                 class="inline-flex items-center gap-1 bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-medium hover:bg-blue-200 transition">
-                                     Edit
+                                    Edit
                                 </a>
                             @else
                                 @if ($proker['edit_request_status'] === 'none')
@@ -101,25 +105,26 @@
                                         @csrf
                                         <button type="submit"
                                                 class="inline-flex items-center gap-1 bg-yellow-100 text-yellow-600 px-3 py-1 rounded-full text-xs font-medium hover:bg-yellow-200 transition">
-                                             Minta Persetujuan
+                                            Minta Persetujuan
                                         </button>
                                     </form>
                                 @elseif ($proker['edit_request_status'] === 'pending')
                                     <span class="inline-flex items-center gap-1 bg-gray-100 text-gray-500 px-3 py-1 rounded-full text-xs font-medium">
-                                         Menunggu Persetujuan
+                                        Menunggu Persetujuan
                                     </span>
                                 @elseif ($proker['edit_request_status'] === 'approved')
                                     <a href="{{ route('proker.edit', ['slug' => $data['slug'], 'id' => $proker['id']]) }}"
                                     class="inline-flex items-center gap-1 bg-green-100 text-green-600 px-3 py-1 rounded-full text-xs font-medium hover:bg-green-200 transition">
-                                         Edit (Disetujui)
+                                        Edit (Disetujui)
                                     </a>
                                 @elseif ($proker['edit_request_status'] === 'rejected')
                                     <span class="inline-flex items-center gap-1 bg-red-100 text-red-500 px-3 py-1 rounded-full text-xs font-medium">
-                                         Permintaan Ditolak
+                                        Permintaan Ditolak
                                     </span>
                                 @endif
                             @endif
                         </td>
+
 
                         {{-- Aksi --}}
                         <td class="px-6 py-3">

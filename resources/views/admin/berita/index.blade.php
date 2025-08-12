@@ -17,12 +17,12 @@
 
     <div class="overflow-x-auto bg-white shadow-md rounded-lg">
         <table class="min-w-full table-auto divide-y divide-purple-200">
-            <thead class="bg-purple-100">
+            <thead class="bg-purple-600 text-white text-bold">
                 <tr>
-                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Gambar</th>
-                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Judul</th>
-                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Deskripsi</th>
-                    <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Aksi</th>
+                    <th class="px-4 py-3 ">Gambar</th>
+                    <th class="px-4 py-3 ">Judul</th>
+                    <th class="px-4 py-3 ">Deskripsi</th>
+                    <th class="px-4 py-3 ">Aksi</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-purple-200">
@@ -35,7 +35,7 @@
                     <td class="px-4 py-3 text-gray-600">{{ Str::limit($berita->deskripsi, 100) }}</td>
                     <td class="px-4 py-3 space-x-2">
                         <a href="{{ route('admin.berita.edit', $berita) }}"
-                           class="inline-block bg-blue-400 hover:bg-blue-500 text-white px-3 py-1 rounded text-sm">
+                           class="inline-block bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded text-sm">
                             Edit
                         </a>
                         <form action="{{ route('admin.berita.destroy', $berita) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin hapus?')">

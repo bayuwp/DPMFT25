@@ -3,9 +3,9 @@
 @section('content')
 <div class="max-w-7xl mx-auto py-10 px-4">
     <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-blue-800">Daftar Cabinets</h2>
+        <h2 class="text-2xl font-bold text-purple-800">Daftar Cabinets</h2>
         <a href="{{ route('admin.cabinets.create') }}"
-           class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+           class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
             + Tambah Cabinet
         </a>
     </div>
@@ -19,7 +19,7 @@
     <div class="bg-white shadow rounded overflow-x-auto">
         <table class="min-w-full table-auto">
             <thead>
-                <tr class="bg-blue-600 text-white text-left">
+                <tr class="bg-purple-600 text-white text-left">
                     <th class="px-4 py-2">Nama Cabinet</th>
                     <th class="px-4 py-2">Slug</th>
                     <th class="px-4 py-2">Logo</th>
@@ -50,7 +50,7 @@
                     </td>
                     <td class="px-4 py-2 space-x-2">
                         <a href="{{ route('admin.cabinets.edit', $cabinet->id) }}"
-                           class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
+                           class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600">
                            Edit
                         </a>
                         <form action="{{ route('admin.cabinets.destroy', $cabinet->id) }}"

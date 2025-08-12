@@ -9,79 +9,101 @@ use Illuminate\Support\Facades\Storage;
 
 class BeritaController extends Controller
 {
-    // Tampilkan semua berita
     public function index()
     {
-        $beritas = Berita::latest()->get();
+        $beritas = Berita::latest()->get() ?? collect();
         return view('admin.berita.index', compact('beritas'));
     }
 
-    // Tampilkan form tambah berita
     public function create()
     {
         return view('admin.berita.create');
     }
 
-    // Simpan berita baru
     public function store(Request $request)
     {
         $request->validate([
-            'judul' => 'required|string|max:255',
+            'judul'     => 'required|string|max:255',
             'deskripsi' => 'required',
-            'gambar' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'gambar'    => 'required',
+            'gambar.*'  => 'image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $gambar = $request->file('gambar')->store('berita', 'public');
+        $gambarFiles = is_array($request->file('gambar'))
+            ? $request->file('gambar')
+            : [$request->file('gambar')];
+
+        $gambarPaths = [];
+        foreach ($gambarFiles as $file) {
+            $gambarPaths[] = $file->store('berita', 'public');
+        }
 
         Berita::create([
-            'judul' => $request->judul,
+            'judul'     => $request->judul,
             'deskripsi' => $request->deskripsi,
-            'gambar' => $gambar,
+            'gambar'    => json_encode($gambarPaths),
         ]);
 
-        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil ditambahkan.');
+        return redirect()->route('admin.berita.index')
+            ->with('success', 'Berita berhasil ditambahkan.');
     }
 
-    // Tampilkan form edit berita
     public function edit(Berita $berita)
     {
         return view('admin.berita.edit', compact('berita'));
     }
 
-    // Proses update berita
     public function update(Request $request, Berita $berita)
     {
         $request->validate([
-            'judul' => 'required|string|max:255',
+            'judul'     => 'required|string|max:255',
             'deskripsi' => 'required',
-            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'gambar.*'  => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
+        $gambarPaths = json_decode($berita->gambar, true) ?? [];
+
         if ($request->hasFile('gambar')) {
-            if ($berita->gambar && Storage::disk('public')->exists($berita->gambar)) {
-                Storage::disk('public')->delete($berita->gambar);
+            // Hapus semua gambar lama
+            foreach ($gambarPaths as $old) {
+                if (Storage::disk('public')->exists($old)) {
+                    Storage::disk('public')->delete($old);
+                }
             }
-            $berita->gambar = $request->file('gambar')->store('berita', 'public');
+
+            $gambarFiles = is_array($request->file('gambar'))
+                ? $request->file('gambar')
+                : [$request->file('gambar')];
+
+            $gambarPaths = [];
+            foreach ($gambarFiles as $file) {
+                $gambarPaths[] = $file->store('berita', 'public');
+            }
         }
 
         $berita->update([
-            'judul' => $request->judul,
+            'judul'     => $request->judul,
             'deskripsi' => $request->deskripsi,
-            'gambar' => $berita->gambar,
+            'gambar'    => json_encode($gambarPaths),
         ]);
 
-        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil diperbarui.');
+        return redirect()->route('admin.berita.index')
+            ->with('success', 'Berita berhasil diperbarui.');
     }
 
-    // Hapus berita
     public function destroy(Berita $berita)
     {
-        if ($berita->gambar && Storage::disk('public')->exists($berita->gambar)) {
-            Storage::disk('public')->delete($berita->gambar);
+        if ($berita->gambar) {
+            $gambarList = json_decode($berita->gambar, true) ?? [];
+            foreach ($gambarList as $gambar) {
+                if (Storage::disk('public')->exists($gambar)) {
+                    Storage::disk('public')->delete($gambar);
+                }
+            }
         }
 
         $berita->delete();
-
-        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil dihapus.');
+        return redirect()->route('admin.berita.index')
+            ->with('success', 'Berita berhasil dihapus.');
     }
 }

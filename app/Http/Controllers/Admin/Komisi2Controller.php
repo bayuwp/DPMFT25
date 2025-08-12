@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Komisi2;
 use Illuminate\Support\Facades\Storage;
 
-class PublicKomisi2Controller extends Controller
+class Komisi2Controller extends Controller
 {
     public function index()
     {

@@ -13,7 +13,10 @@
 
     <!-- AOS CSS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <!-- Splide CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
 
+    @stack('styles')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-poppins">
@@ -112,6 +115,7 @@
         }, 2000);
     });
 </script>
-@stack('styles')
+
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
 </body>
 </html>

@@ -15,7 +15,7 @@
     {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
 
 </head>
-<body class="font-poppins bg-gray-100 min-h-screen">
+<body class="font-poppins bg-white min-h-screen">
 
 <!-- Navbar Admin -->
 <nav class="bg-pink shadow mb-8">
@@ -35,7 +35,7 @@
                 <a href="{{ url('/admin/ppl-ft') }}" class="text-blue-700 hover:text-purple-600 font-medium">PPL-FT</a>
             </li>
             <li>
-                <a href="{{ url('/admin/teknik-vision') }}" class="text-blue-700 hover:text-purple-600 font-medium">Teknik Vision</a>
+                <a href="{{ url('/admin/ruang_cakra') }}" class="text-blue-700 hover:text-purple-600 font-medium">Ruang Cakra</a>
             </li>
             <li>
                 <a href="{{ route('admin.cabinets.index') }}" class="text-blue-700 hover:text-purple-600 font-medium">Cabinet</a>

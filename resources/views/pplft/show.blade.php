@@ -13,7 +13,7 @@
     @php
         $templates = [
             ['name' => 'Proposal', 'folder' => 'proposal', 'color' => 'bg-blue-600 hover:bg-blue-700'],
-            ['name' => 'Laporan Pertanggung Jawaban', 'folder' => 'laporan', 'color' => 'bg-green-600 hover:bg-green-700'],
+            ['name' => 'Laporan Pertanggung Jawaban', 'folder' => 'laporan', 'color' => 'bg-blue-600 hover:bg-blue-700'],
             ['name' => 'Instrumen Materi', 'folder' => 'instrumen', 'color' => 'bg-blue-600 hover:bg-blue-700'],
         ];
     @endphp
@@ -217,63 +217,93 @@
 
 
     {{-- ✅ Tabel Dokumen Tambahan --}}
-    <div class="mb-12">
-        <h3 class="text-xl font-semibold mb-4 text-gray-700">📁 Dokumen Tambahan Proker</h3>
-        <div class="overflow-x-auto border rounded shadow">
-            <table class="min-w-full text-sm bg-white divide-y divide-gray-200">
-                <thead class="bg-blue-200 text-blue-700 text-center">
-                    <tr>
-                        @foreach (['No', 'Nama Proker', 'Rundown', 'Absensi Panitia', 'Absensi Peserta', 'Absensi Tamu Undangan', 'Instrumen Materi', 'Dokumentasi', 'Time Stap'] as $head)
-                            <th class="px-4 py-3 font-semibold">{{ $head }}</th>
+<div class="mb-12">
+    <h3 class="text-xl font-semibold mb-4 text-gray-700">📁 Dokumen Tambahan Proker</h3>
+    <div class="overflow-x-auto border rounded shadow">
+        <table class="min-w-full text-sm bg-white divide-y divide-gray-200">
+            <thead class="bg-blue-200 text-blue-700 text-center">
+                <tr>
+                    @foreach (['No', 'Nama Proker', 'Rundown', 'Absensi Panitia', 'Absensi Peserta', 'Absensi Tamu Undangan', 'Instrumen Materi', 'Dokumentasi', 'Time Stap'] as $head)
+                        <th class="px-4 py-3 font-semibold">{{ $head }}</th>
+                    @endforeach
+                </tr>
+            </thead>
+            <tbody class="text-gray-700 divide-y text-center">
+                @forelse($prokers as $index => $proker)
+                    <tr class="hover:bg-gray-50 align-top">
+                        <td class="px-4 py-2">{{ $index + 1 }}</td>
+                        <td class="px-4 py-2 font-medium">{{ $proker->nama_proker }}</td>
+
+                        @foreach (['rundown_kegiatan','absensi_panitia','absensi_peserta','absensi_tamu_undangan','instrumen_materi','dokumentasi','time_stap'] as $field)
+                            <td class="px-4 py-2">
+
+                                {{-- ===== Instrumen Materi ===== --}}
+                                @if ($field === 'instrumen_materi')
+                                    @if ($proker->instrumen_materi)
+                                        <a href="{{ asset('storage/' . $proker->instrumen_materi) }}" target="_blank" class="text-blue-600 hover:underline">Lihat</a>
+                                    @else
+                                        <span class="italic text-gray-400">Belum ada</span>
+                                    @endif
+
+                                {{-- ===== Dokumentasi & Time Stap ===== --}}
+                                @elseif (in_array($field, ['dokumentasi', 'time_stap']))
+                                    @if ($proker->$field)
+                                        @php
+                                            $link = $proker->$field;
+                                            // Jika bukan URL eksternal, anggap file lokal
+                                            if (!preg_match('/^https?:\/\//', $link)) {
+                                                $link = asset('storage/' . $link);
+                                            }
+                                        @endphp
+                                        <div class="flex flex-col items-center space-y-2">
+                                            <a href="{{ $link }}" target="_blank" class="text-blue-600 hover:underline">Lihat</a>
+                                            <form action="{{ route('ppl-ft.proker.updateLinkDokumen', ['slug' => $slug, 'id' => $proker->id, 'field' => $field]) }}" method="POST">
+                                                @csrf
+                                                <input type="url" name="link" placeholder="Masukkan link..." class="text-xs mb-1 w-full border rounded px-2 py-1">
+                                                <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white text-xs py-1 px-2 rounded">Ganti Link</button>
+                                            </form>
+                                        </div>
+                                    @else
+                                        <form action="{{ route('ppl-ft.proker.updateLinkDokumen', ['slug' => $slug, 'id' => $proker->id, 'field' => $field]) }}" method="POST">
+                                            @csrf
+                                            <input type="url" name="link" placeholder="Masukkan link..." class="text-xs mb-1 w-full border rounded px-2 py-1" required>
+                                            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white text-xs py-1 px-2 rounded">Simpan Link</button>
+                                        </form>
+                                    @endif
+
+                                {{-- ===== Field Lain (Upload File) ===== --}}
+                                @else
+                                    @if ($proker->$field)
+                                        <div class="flex flex-col items-center space-y-2">
+                                            <a href="{{ asset('storage/' . $proker->$field) }}" target="_blank" class="text-blue-600 hover:underline">Lihat</a>
+                                            <form action="{{ route('ppl-ft.proker.updateDokumen', ['slug' => $slug, 'id' => $proker->id, 'field' => $field]) }}" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                <input type="file" name="file" class="text-xs mb-1">
+                                                <button type="submit" class="px-2 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded text-xs">Ganti</button>
+                                            </form>
+                                        </div>
+                                    @else
+                                        <form action="{{ route('ppl-ft.proker.updateDokumen', ['slug' => $slug, 'id' => $proker->id, 'field' => $field]) }}" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="file" name="file" class="text-xs mb-1" required>
+                                            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white text-xs py-1 px-2 rounded">Upload</button>
+                                        </form>
+                                    @endif
+                                @endif
+
+                            </td>
                         @endforeach
                     </tr>
-                </thead>
-                <tbody class="text-gray-700 divide-y text-center">
-                    @forelse($prokers as $index => $proker)
-                        <tr class="hover:bg-gray-50 align-top">
-                            <td class="px-4 py-2">{{ $index + 1 }}</td>
-                            <td class="px-4 py-2 font-medium">{{ $proker->nama_proker }}</td>
-
-                            @foreach (['rundown_kegiatan','absensi_panitia','absensi_peserta','absensi_tamu_undangan','instrumen_materi','dokumentasi','time_stap'] as $field)
-                                <td class="px-4 py-2">
-                                    @if ($field === 'instrumen_materi')
-                                        @if ($proker->instrumen_materi)
-                                            <a href="{{ asset('storage/' . $proker->instrumen_materi) }}" target="_blank" class="text-blue-600 hover:underline">Lihat</a>
-                                        @else
-                                            <span class="italic text-gray-400">Belum ada</span>
-                                        @endif
-                                    @else
-                                        @if ($proker->$field)
-                                            <div class="flex flex-col items-center space-y-2">
-                                                <a href="{{ asset('storage/' . $proker->$field) }}" target="_blank" class="text-blue-600 hover:underline">Lihat</a>
-                                                <form action="{{ route('ppl-ft.proker.updateDokumen', ['slug' => $slug, 'id' => $proker->id, 'field' => $field]) }}" method="POST" enctype="multipart/form-data">
-                                                    @csrf
-                                                    <input type="file" name="file" class="text-xs mb-1">
-                                                    <button type="submit" class="px-2 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded text-xs">Ganti</button>
-                                                </form>
-                                            </div>
-                                        @else
-                                            <form action="{{ route('ppl-ft.proker.updateDokumen', ['slug' => $slug, 'id' => $proker->id, 'field' => 'time_stap']) }}"
-                                                method="POST" enctype="multipart/form-data">
-                                                @csrf
-                                                <input type="file" name="files[]" accept="image/*" multiple class="text-xs mb-1 w-full" required>
-                                                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white text-xs py-1 px-2 rounded">Upload</button>
-                                            </form>
-
-                                        @endif
-                                    @endif
-                                </td>
-                            @endforeach
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="9" class="text-center py-4 text-gray-500">Belum ada dokumen tambahan.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+                @empty
+                    <tr>
+                        <td colspan="9" class="text-center py-4 text-gray-500">Belum ada dokumen tambahan.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
+</div>
+
 
     {{-- ✅ Chat Box --}}
     <div class="mb-16">
