@@ -22,10 +22,10 @@
             @php
                 $arsips = [
                     ['title' => 'UU REMA 2015 AMANDEMEN I', 'link' => 'https://drive.google.com/file/d/1RHlE8GmeORg4kfjePdMiBaUksjV3HL0N/view?usp=drivesdk'],
-                    ['title' => 'Tata Tertib DPM FT', 'link' => 'https://drive.google.com/drive/folders/1Qw4QX_F0RX5geSWaeC9DulVxtTOcgtfc'],
-                    ['title' => 'Kode Etik DPM FT', 'link' => 'https://drive.google.com/file/d/1REAygDCCTH9eLIgHhagqORv8mx_rJvJi/view?usp=drivesdk'],
-                    ['title' => 'UU PKKMB FT', 'link' => 'https://drive.google.com/file/d/1Q4xzZWyneEWDuyEjKn3RgmiYzmFDLNcq/view?usp=drivesdk'],
-                    ['title' => 'SOP Pengawasan PKKMB FT', 'link' => 'https://drive.google.com/file/d/1RW8X1yxzIqBtCZDLLBxhD7iLPjdCa-6H/view?usp=drivesdk'],
+                    ['title' => 'Tata Tertib DPM FT', 'link' => 'https://drive.google.com/file/d/19JrjxH6G9kvzFvaG-Owb95q75x6MlcUL/view?usp=sharing'],
+                    ['title' => 'Kode Etik DPM FT', 'link' => 'https://drive.google.com/file/d/1VYeUpNwmGhjy5r_t9q7wb3ImBi-OLI1-/view?usp=sharing'],
+                    ['title' => 'UU PKKMB FT', 'link' => 'https://drive.google.com/file/d/1jQXKzKoMOjhF5oCqZlTUPtnhCHLKAmQx/view?usp=sharing'],
+                    ['title' => 'SOP Pengawasan PKKMB FT', 'link' => 'https://drive.google.com/file/d/1TPSuYxUFtS6EEs41OOttfzA5MiNLvkUU/view?usp=sharing'],
                     ['title' => 'Peraturan Pemira Fakultas Teknik', 'link' => '#'],
                 ];
             @endphp
