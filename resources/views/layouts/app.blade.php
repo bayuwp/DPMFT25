@@ -115,6 +115,12 @@
         }, 2000);
     });
 </script>
+    <script>
+        document.getElementById('hamburger-menu').addEventListener('click', function () {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+    </script>
 
 <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
 </body>
